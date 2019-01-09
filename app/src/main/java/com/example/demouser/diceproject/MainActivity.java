@@ -3,6 +3,7 @@ package com.example.demouser.diceproject;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected ImageView diceImageView;
     protected Drawable diceDrawable;
-    protected TextView scoreView, turnView, computerView;
+    protected TextView scoreView, turnView, computerView, cptTurnView;
     protected Button rollBtn, holdBtn;
 
     @Override
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         scoreView = findViewById(R.id.score);
         turnView = findViewById(R.id.turnScore);
         computerView = findViewById(R.id.compScore);
+        cptTurnView = findViewById(R.id.computerTurnView);
 
         rollBtn = findViewById(R.id.rollButton);
         holdBtn = findViewById(R.id.holdButton);
@@ -114,36 +116,49 @@ public class MainActivity extends AppCompatActivity {
         computerView.setText("Computer score: 0");
     }
 
-    //This method to hold a single roll of the computer - still working on it
-    protected int computerTurnHelper() {
+    protected boolean computerTurnHelper() {
+        int diceNum = rollHelper();
+        //Log.i("test", "dice number" +diceNum);
+        if (diceNum == 1) {
+            cptTurnView.setText("Computer Turn Score: 0");
+            cptScore = 0;
+            return false;
+        }
+        else {
+            cptScore += diceNum;
+            cptTurnView.setText("Computer Turn Score: " + cptScore);
+            return true;
+
+        }
+    }
+
+    protected void computerTurn() {
+
         rollBtn.setEnabled(false);
         holdBtn.setEnabled(false);
 
-        int diceNum = rollHelper();
-        Log.i("test", "Computer turn: " + diceNum);
-        if(diceNum == 1){
-            Log.i("test", "Computer turned a 1");
-            cptScore = 0;
-        }
-        else{
-            cptScore += diceNum;
-        }
+        final Handler handler = new Handler();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                //Log.i("test", "Goes in the handler");
+                if (computerTurnHelper() && cptScore < 20) {
+                    handler.postDelayed(this,1000);
+                }
+                else {
+                    cptTotal += cptScore;
+                    computerView.setText("Computer Score: " + cptTotal);
+                    cptScore = 0;
+                    cptTurnView.setText("Computer Turn Score: 0");
+                }
+            }
+        };
 
-        cptTotal += cptScore;
-        cptScore = 0;
+        handler.postDelayed(r,1000);
 
-        computerView.setText("Computer Score: " + cptTotal);
+        //Log.i("test", "Gets to the setText part");
 
         rollBtn.setEnabled(true);
         holdBtn.setEnabled(true);
-
-        return cptScore;
-    }
-    //Still incomplete
-    protected void computerTurn() {
-        while (cptScore < 20) {
-            cptScore += computerTurnHelper();
-
-        }
     }
 }

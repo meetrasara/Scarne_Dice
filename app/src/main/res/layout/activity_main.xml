@@ -78,4 +78,12 @@
         android:layout_marginEnd="-22dp"
         android:layout_marginRight="-22dp"
         android:text="RESET" />
+
+    <TextView
+        android:id="@+id/computerTurnView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/compScore"
+        android:layout_alignTop="@+id/turnScore"
+        android:text="Computer Turn score: 0" />
 </RelativeLayout>
