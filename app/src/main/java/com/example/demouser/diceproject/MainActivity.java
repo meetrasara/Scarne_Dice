@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected Drawable diceDrawable;
     protected TextView scoreView, turnView, computerView, cptTurnView;
     protected Button rollBtn, holdBtn;
+    protected WebView rollingDice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
         diceImageView = findViewById(R.id.diceImage);
         final Resources res = getResources();
+
+//        rollingDice = (WebView) findViewById(R.id.wv);
+////        rollingDice.setWebViewClient(new myWebClient());
+//
+//        rollingDice.loadUrl("https://giphy.com/gifs/l3q2yYNt8DXoyKRdm");
 
         diceDrawable = res.getDrawable(R.drawable.dice1);
 
